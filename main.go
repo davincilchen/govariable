@@ -2,6 +2,7 @@ package main
 
 import (
 	"crypto/rand"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -60,6 +61,8 @@ func main() {
 
 	// ================================== //
 	fmt.Println(randToken())
+	fmt.Println(sessionId())
+
 }
 
 func getV() (int, error) {
@@ -74,4 +77,12 @@ func randToken() string {
 	b := make([]byte, 8)
 	rand.Read(b)
 	return fmt.Sprintf("%x", b)
+}
+
+func sessionId() string {
+	b := make([]byte, 32)
+	if _, err := rand.Read(b); err != nil {
+		return ""
+	}
+	return base64.URLEncoding.EncodeToString(b)
 }
